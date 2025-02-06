@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  dextra-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.local
+      target: dev
+    container_name: 'dextra-app'
+    depends_on:
+      dextra-db:
+        condition: service_healthy
+    expose:
+      - '3000'
+    ports:
+      - '3000:3000'
+    working_dir: /usr/src/app
+    command: '/bin/bash ./local_entrypoint.sh'
+    env_file:
+      - .env
+    environment:
+      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@dextra-db:5432/neurdb
+      - DIRECT_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@dextra-db:5432/neurdb
+    volumes:
+      - .:/usr/src/app
+      - root_node_modules:/usr/src/app/node_modules
+      - webapp_next:/usr/src/app/.next
+
+  dextra-studio:
+    build:
+      context: .
+      dockerfile: Dockerfile.local
+      target: dev
+    container_name: 'dextra-studio'
+    depends_on:
+      dextra-db:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@dextra-db:5432/neurdb
+    expose:
+      - '5555'
+    ports:
+      - '5555:5555'
+    working_dir: /usr/src/app
+    command: 'pnpm npx prisma studio'
+    volumes:
+      - .:/usr/src/app
+      - root_node_modules:/usr/src/app/node_modules
+      - webapp_next:/usr/src/app/.next
+
+  dextra-db:
+    image: 'postgres:15'
+    container_name: 'dextra-db'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - '5432:5432'
+    volumes:
+      - 'dextra-db-data:/var/lib/postgresql/data'
+
+volumes:
+  dextra-db-data:
+  root_node_modules:
+  webapp_next:

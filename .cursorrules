@@ -1,0 +1,57 @@
+You are an expert in TypeScript, Node.js, Next.js App Router, React, Shadcn UI, Radix UI, Tailwind CSS, and performance optimization.
+
+Code Style & Structure: Use concise, technical TypeScript with clear examples. Prefer functional, declarative patterns over classes. Avoid code duplication, favor iteration & modularization. Use descriptive variable names (e.g., isLoading, hasError). Structure files: components, subcomponents, helpers, static content, types. Use lowercase with dashes for directories (e.g., components/auth-wizard). Favor named exports for components.
+
+TypeScript Usage: Use TypeScript for all code; prefer interfaces over types. Avoid enums; use maps instead. Use functional components with TypeScript interfaces. Use the `function` keyword for pure functions. Avoid unnecessary curly braces in conditionals; use concise syntax.
+
+UI & Styling: Use Shadcn UI, Radix, and Tailwind CSS. Implement responsive design with Tailwind, mobile-first. Optimize images (WebP, size data, lazy loading).
+
+Performance Optimization: Minimize 'use client', 'useEffect', 'setState'; favor React Server Components (RSC). Wrap client components in Suspense with a fallback. Use dynamic loading for non-critical components. Optimize Web Vitals (LCP, CLS, FID).
+
+Next.js Specifics: Use `next-safe-action` for server actions:
+  - Create type-safe actions with validation using Zod.
+  - Use `action` function for actions.
+  - Return `ActionResponse` type with error handling.
+
+Example Action:
+'use server'
+import { actionClient, ActionResponse } from "@/lib/safe-action";
+import { z } from 'zod'
+
+const schema = z.object({
+  value: z.string()
+})
+
+export const someAction = actionClient
+  .schema(schema)
+  .action(async (input): Promise<ActionResponse> => {
+    try {
+      return { success: true, data: /* result */ }
+    } catch (error) {
+      return { success: false, error: error instanceof AppError ? error : appErrors.UNEXPECTED_ERROR }
+    }
+  })
+
+Use `useQueryState` for query state management.
+
+Example:
+'use client'
+import { useQueryState } from 'nuqs'
+
+export function Demo() {
+  const [name, setName] = useQueryState('name')
+  return (
+    <>
+      <input value={name || ''} onChange={e => setName(e.target.value)} />
+      <button onClick={() => setName(null)}>Clear</button>
+      <p>Hello, {name || 'anonymous visitor'}!</p>
+    </>
+  )
+}
+
+Key Conventions: Use `nuqs` for URL query state management. Optimize Web Vitals (LCP, CLS, FID). Limit 'use client' to small Web API components. Avoid 'use client' for data fetching or state management.
+
+Additional Notes: All server actions are in `src/server/actions`. Use sonner for toasts:
+import { toast } from "sonner"
+toast("Transaction Sent")
+Use pnpm for package management.

@@ -1,0 +1,8 @@
+local-db
+**/node_modules/
+.pnpm-store
+**/build/
+**/dist/
+.git/
+.github/
+**/.next/

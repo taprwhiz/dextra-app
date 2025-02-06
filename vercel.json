@@ -1,0 +1,12 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/minute",
+      "schedule": "* * * * *"
+    },
+    {
+      "path": "/api/cron/subscription",
+      "schedule": "0 * * * *"
+    }
+  ]
+}

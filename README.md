@@ -36,7 +36,3 @@
 ### **Ecosystem Access**
 - **Integrated with Solana’s Leading Platforms**: Access **Jupiter** for token swaps and liquidity aggregation, **Magic Eden** for NFT management, and more within Dextra’s ecosystem.
 - **Cross-Blockchain Compatibility**: Operates seamlessly across both **Solana** and **Binance Smart Chain**, allowing for broad DeFi and NFT interaction.
-
----
-
-**Dextra** leverages **artificial intelligence** to provide powerful tools for Solana and Binance Smart Chain users, enhancing your DeFi, NFT, and portfolio management experience. With its modern interface, integrated wallet, and AI copilot, Dextra is the ultimate tool for navigating the blockchain ecosystem.
